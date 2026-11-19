@@ -1,12 +1,17 @@
 """Autograder for the PetalMart Free-Shipping capstone.
 
-Run from the learner's capstone folder:
-    pytest autograder/test_capstone.py --results results.json --expected instructor/expected_results.json
+Self-check (learners):
+    pytest autograder/test_capstone.py --results starter/results.json
+    Runs the completeness check only; the expected values are held by the Academy grader.
+
+Full grading (Academy):
+    pytest autograder/test_capstone.py --results <learner results.json> --expected <expected_results.json>
 
 Each test maps to a rubric criterion. The memo and readout (criterion 8) are reviewed by an instructor.
 """
 import json
 import math
+import os
 
 import pytest
 
@@ -18,7 +23,31 @@ def res(request):
 
 @pytest.fixture(scope="session")
 def exp(request):
-    return json.load(open(request.config.getoption("--expected")))
+    path = request.config.getoption("--expected")
+    if not path or not os.path.exists(path):
+        pytest.skip("expected results are held by the Academy grader")
+    return json.load(open(path))
+
+
+REQUIRED = [
+    "cleaning", "srm_p_value", "balance_p_value_customer_type", "conversion_diff_pp", "conversion_diff_ci_pp",
+    "conversion_p_value", "aov_diff", "aov_diff_ci", "p_treatment_better_conversion", "profit_per_user",
+    "profit_lift_per_user_by_segment", "logit_interaction_coef", "logit_interaction_p",
+    "rollout_naive_lift", "rollout_did_lift", "recommendation",
+]
+
+
+def _filled(v):
+    if isinstance(v, dict):
+        return all(_filled(x) for x in v.values())
+    if isinstance(v, list):
+        return all(_filled(x) for x in v)
+    return v is not None
+
+
+def test_results_complete(res):
+    missing = [k for k in REQUIRED if k not in res or not _filled(res[k])]
+    assert not missing, f"fill these in results.json: {missing}"
 
 
 def close(a, b, rel=0.05, abs_=1e-3):

@@ -17,7 +17,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 from scipy import stats
 
-DATA = Path("../datasets/data/petalmart_shipping_test")  # run the generator first
+DATA = Path(__file__).resolve().parents[2] / "datasets" / "data" / "petalmart_shipping_test" if "__file__" in globals() else Path("../../datasets/data/petalmart_shipping_test")  # run the generator first
 users = pd.read_csv(DATA / "users.csv")
 assign = pd.read_csv(DATA / "assignments.csv")
 sessions = pd.read_csv(DATA / "sessions.csv")

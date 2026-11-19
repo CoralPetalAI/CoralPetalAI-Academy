@@ -4,7 +4,7 @@ Statistics for Data Science · about 10 hours
 
 ## Business use case
 
-PetalMart's leadership wants to know whether lowering the free-shipping threshold from ₹999 to ₹699 should go to all customers. A four-week A/B test has run, and earlier a same-day delivery rollout happened in six cities without randomization. Profile and clean the data, check the experiment's validity, estimate effects on conversion, average order value and profit with frequentist and Bayesian methods, cross-check with the observational rollout, and write a decision memo.
+PetalMart's leadership wants to know whether lowering the free-shipping threshold from ₹999 to ₹699 should go to all customers. A four-week A/B test has run, and earlier a same-day delivery rollout happened in six cities without randomization. Profile and clean the data, check the experiment's validity, estimate effects on conversion, average order value and profit with frequentist and Bayesian methods, cross-check with the observational rollout, and write a decision memo. For annual impact, assume about 4.2 million active users a year and 13 four-week periods.
 
 ## Data source
 
@@ -57,4 +57,5 @@ Pass = 70. One resubmission is allowed. Instructor review within 5 working days.
 
 1. Generate the data (above).
 2. Open `starter/capstone_starter.py` as a notebook (Jupyter, VS Code, or `jupytext --to notebook`), complete every `TODO`, and run it to write `results.json`.
-3. Push your notebook, `results.json`, `requirements.txt`, memo (PDF) and slides to your own public GitHub repository with a results-first README, and submit the link in the Academy.
+3. Self-check: `pytest autograder/test_capstone.py --results starter/results.json` confirms every field is filled.
+4. Push your notebook, `results.json`, `requirements.txt`, memo (PDF) and slides to your own public GitHub repository with a results-first README, and submit the link in the Academy.

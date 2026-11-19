@@ -181,7 +181,7 @@ def main(out: Path, seed: int = 2026):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, default=Path("data/petalmart_shipping_test"))
+    ap.add_argument("--out", type=Path, default=Path(__file__).resolve().parent / "data" / "petalmart_shipping_test")
     ap.add_argument("--seed", type=int, default=2026)
     a = ap.parse_args()
     main(a.out, a.seed)
