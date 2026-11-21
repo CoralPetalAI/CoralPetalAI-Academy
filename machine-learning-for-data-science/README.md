@@ -40,6 +40,7 @@ All data is Coral Petal synthetic, generated with seed 2026 so every learner get
 
 ```
 datasets/                               data generators (output goes to datasets/data/, not committed)
+builds/                                 starter notebooks for Builds 0–12 and the shared loader petalbank.py
 project-1/                              Portfolio Project 1 brief, starter and autograder
 project-2/                              Portfolio Project 2 brief, starter and autograder
 capstone/
@@ -48,4 +49,3 @@ capstone/
   autograder/                           pytest checks for the autograded rubric criteria
 ```
 
-Build starters are coming soon.
