@@ -4,7 +4,7 @@ Machine Learning for Data Science · about 10 hours
 
 ## Business use case
 
-PetalBank approves personal loans in under a minute. Defaults run at about 6% and cost ₹1.1 crore a quarter. Build a model that predicts 12-month default at application time, choose an approval threshold that maximizes expected profit, explain individual decisions, check fairness, ship it behind an API and plan its monitoring.
+PetalBank approves personal loans in under a minute. Defaults run at about 6% and cost about ₹8 crore a quarter. Build a model that predicts 12-month default at application time, choose an approval threshold that maximizes expected profit, explain individual decisions, check fairness, ship it behind an API and plan its monitoring.
 
 ## Data source
 

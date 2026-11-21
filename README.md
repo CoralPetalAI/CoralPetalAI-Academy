@@ -5,7 +5,7 @@ Study materials for the Coral Petal AI Academy data science courses: dataset gen
 | # | Course | Folder |
 |---|---|---|
 | 1 | Statistics for Data Science | [`statistics-for-data-science/`](statistics-for-data-science/) |
-| 2 | Machine Learning for Data Science | [`machine-learning-for-data-science/`](machine-learning-for-data-science/) (coming soon) |
+| 2 | Machine Learning for Data Science | [`machine-learning-for-data-science/`](machine-learning-for-data-science/) |
 | 3 | Deep Learning for Data Science | [`deep-learning-for-data-science/`](deep-learning-for-data-science/) (coming soon) |
 | 4 | Generative AI for Data Science | [`generative-ai-for-data-science/`](generative-ai-for-data-science/) (coming soon) |
 | 5 | Agentic AI for Data Science | [`agentic-ai-for-data-science/`](agentic-ai-for-data-science/) (coming soon) |

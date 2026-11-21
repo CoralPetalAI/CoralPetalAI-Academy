@@ -4,7 +4,7 @@ Machine Learning for Data Science · after Module 05 · about 6 hours
 
 ## Business use case
 
-PetalBank loses about ₹40 lakh a month to card fraud. A team of 6 analysts can review 360 alerts a day. Build a fraud classifier and choose an alert threshold that minimizes the expected cost of fraud while staying inside the team's review capacity.
+PetalBank loses about ₹1.6 crore a month to card fraud. A team of 6 analysts can review 360 alerts a day. Build a fraud classifier and choose an alert threshold that minimizes the expected cost of fraud while staying inside the team's review capacity.
 
 ## Data source
 
