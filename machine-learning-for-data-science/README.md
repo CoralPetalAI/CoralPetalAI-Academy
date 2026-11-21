@@ -40,10 +40,11 @@ All data is Coral Petal synthetic, generated with seed 2026 so every learner get
 
 ```
 datasets/                               data generators (output goes to datasets/data/, not committed)
+project-1/                              Portfolio Project 1 brief, starter and autograder
 capstone/
   README.md                             brief, tasks, rubric and how to submit
   starter/capstone_starter.py           notebook with TODOs; writes results.json
   autograder/                           pytest checks for the autograded rubric criteria
 ```
 
-Build starters and portfolio-project briefs are coming soon.
+Build starters and the Portfolio Project 2 kit are coming soon.
