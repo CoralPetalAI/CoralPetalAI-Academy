@@ -4,6 +4,8 @@ Intermediate · about 54 hours · 12 modules, 2 portfolio projects and a capston
 
 You are the data scientist on the Coral Petal analytics team's engagement with **PetalMart**, an online retailer selling across India. Every module answers one question PetalMart's leadership asks of its data.
 
+**Course structure (PDF):** [course-structure.pdf](course-structure.pdf) shows every module and lesson, with the builds, quizzes, portfolio projects and capstone, in the order you take them.
+
 ## Modules
 
 | # | Module |
@@ -65,8 +67,11 @@ Each build is a notebook in `builds/` (open the `.py` file as a notebook in Jupy
 ## Folder
 
 ```
+course-structure.pdf                    the whole course at a glance, in order
 datasets/                               data generators (output goes to datasets/data/, not committed)
 builds/                                 starter notebooks for Builds 0–12 and the shared loader petalmart.py
+project-1/                              Portfolio Project 1 (after Module 05): brief, starter and autograder
+project-2/                              Portfolio Project 2 (after Module 09): brief, starter and autograder
 capstone/
   README.md                             brief, tasks, rubric and how to submit
   starter/capstone_starter.py           notebook with TODOs; writes results.json
