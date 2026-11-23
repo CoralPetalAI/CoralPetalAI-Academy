@@ -42,10 +42,31 @@ All data is Coral Petal synthetic, generated with seed 2026 so every learner get
 
 `petalmart_common.py` holds what every generator shares: cities, regions, categories and the festival calendar.
 
+## Builds
+
+Each build is a notebook in `builds/` (open the `.py` file as a notebook in Jupyter, VS Code or Google Colab, or convert it with `jupytext --to notebook`). Fill every `TODO`; the last cell checks your answers without revealing them. `petalmart.py` loads the data and holds the standard cleaning from Build 2.
+
+| # | Build | Notebook | Data |
+|---|---|---|---|
+| 1 | 0 Set up and meet the data | `build_00_setup.py` | core |
+| 2 | 1 PetalMart data pull | `build_01_data_pull.py` | core |
+| 3 | 2 Data profile of the sales dataset | `build_02_data_profile.py` | core |
+| 4 | 3 A probability model for churn | `build_03_churn_probability.py` | customers |
+| 5 | 4 Simulations of real-world variation | `build_04_simulations.py` | core |
+| 6 | 5 A significance test on a business question | `build_05_significance_test.py` | core |
+| 7 | 6 Bayesian conversion by city | `build_06_bayesian_cities.py` | city_conversion |
+| 8 | 7 A regression explaining revenue drivers | `build_07_revenue_drivers.py` | weekly, customers |
+| 9 | 8 Modeling repeat purchases | `build_08_repeat_purchases.py` | repeat |
+| 10 | 9 Forecast weekly demand | `build_09_demand_forecast.py` | demand |
+| 11 | 10 An A/B test analysis and write-up | `build_10_ab_test.py` | checkout_test |
+| 12 | 11 Did same-day delivery raise spend? | `build_11_same_day_delivery.py` | same_day |
+| 13 | 12 Interview drill | `build_12_interview_drill.py` | none |
+
 ## Folder
 
 ```
 datasets/                               data generators (output goes to datasets/data/, not committed)
+builds/                                 starter notebooks for Builds 0–12 and the shared loader petalmart.py
 capstone/
   README.md                             brief, tasks, rubric and how to submit
   starter/capstone_starter.py           notebook with TODOs; writes results.json

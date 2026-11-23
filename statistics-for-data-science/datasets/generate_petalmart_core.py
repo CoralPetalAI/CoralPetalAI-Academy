@@ -14,7 +14,7 @@ Rules:
 - One financial year of orders, 1 April 2025 to 31 March 2026 (FY2025-26), about 50,000.
   Orders arrive at random: steady between 10:00 and 22:00, quiet at night, busier at
   weekends, in the festive season before Diwali and in PetalMart's sales, growing through the year.
-- Order values are right-skewed (lognormal), median about ₹700, mean about ₹980. Electronics
+- Order values are right-skewed (lognormal), median about ₹700, mean about ₹970. Electronics
   and Home baskets are larger, Grocery and Books smaller; South and West spend a little more per
   order and East less; loyalty members and app orders spend a little more. A few genuine
   bulk orders sit far out in the right tail.
