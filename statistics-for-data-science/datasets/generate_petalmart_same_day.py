@@ -53,7 +53,7 @@ def city_month(rng, cities):
         for k, m in enumerate(MONTHS):
             post = treated and m >= LAUNCH
             ramp = 0.6 if (post and m == LAUNCH) else 1.0
-            spend = base + 850 * (SEASON[m.month] - 1) + 5.5 * k + rng.normal(0, 18) + post * EFFECT * ramp
+            spend = base + 850 * (SEASON[m.month] - 1) + 5.5 * k + rng.normal(0, 10) + post * EFFECT * ramp
             active = int(users * (1.008 ** k) * np.exp(rng.normal(0, 0.02)))
             rows.append((c.city, c.region, m.strftime("%Y-%m"), int(treated), int(post), active, round(spend, 2)))
     return pd.DataFrame(rows, columns=["city", "region", "month", "launch_city", "same_day", "active_customers",

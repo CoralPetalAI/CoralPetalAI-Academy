@@ -10,7 +10,8 @@ customer data is used.
 Rules:
 - Three years of daily orders, Monday 4 September 2023 to Sunday 30 August 2026 (156 full
   weeks), for 10 categories in 4 regions (40 series), with the average selling price and a
-  promotion flag, plus a daily festival calendar and the list of PetalMart's warehouses.
+  promotion flag, plus a daily festival calendar (known 12 weeks beyond the orders, to
+  22 November 2026) and the list of PetalMart's warehouses.
 - Each series has its own level and growth. Every category has a weekly pattern (busier
   at weekends), a yearly pattern of its own (Sports peaks in summer, Books before exams in
   February and March, Fashion in the end-of-season sales) and festival peaks: the 30 days
@@ -36,6 +37,7 @@ import pandas as pd
 from petalmart_common import REGION_SHARE, REGIONS, festival_calendar
 
 START, END = "2023-09-04", "2026-08-30"
+CALENDAR_END = "2026-11-22"  # 12 weeks past the last day of orders
 EAST_WAREHOUSE = pd.Timestamp("2025-06-02")
 # category: daily orders (all regions, Sept 2023), yearly growth, festive lift, sale lift, base price (₹)
 CATS = pd.DataFrame(
@@ -126,7 +128,8 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
             rows.append(pd.DataFrame({"date": d.strftime("%Y-%m-%d"), "category": c.category, "region": r,
                                       "orders": y, "avg_price": np.round(price, 0), "promo": promo_flag[i]}))
     daily = pd.concat(rows, ignore_index=True)
-    cal_out = cal.assign(date=d.strftime("%Y-%m-%d"))
+    future = festival_calendar(START, CALENDAR_END)  # the calendar is known 12 weeks ahead, for forecasting
+    cal_out = future.assign(date=future.date.dt.strftime("%Y-%m-%d"))
     return {"daily_orders": daily, "calendar": cal_out, "warehouses": WAREHOUSES}
 
 
