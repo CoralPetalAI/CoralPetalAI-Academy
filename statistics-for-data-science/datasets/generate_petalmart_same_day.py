@@ -12,15 +12,15 @@ Rules:
   March 2026. Same-day delivery launched in April 2025 in six cities PetalMart chose
   (Bengaluru, Mumbai, Delhi, Hyderabad, Pune, Chennai), not at random: they are richer
   cities whose customers already spent more.
-- All cities share the same seasonal swings (festive months, sales) and the same growth in
-  rupees, so trends before the launch are parallel. Same-day delivery raised spend per customer by
-  about ₹55 a month, reaching its full effect in the second month. A naive comparison of
+- All money is in US dollars. All cities share the same seasonal swings (festive months, sales)
+  and the same growth in dollars, so trends before the launch are parallel. Same-day delivery
+  raised spend per customer by about $5.50 a month, reaching its full effect in the second month. A naive comparison of
   launch and other cities after the launch overstates it several times over.
 - customers: 20,000 customers in launch and other cities, with tenure, device, age band,
   orders and spend in the six months before the launch (October 2024 to March 2025) and spend
   in the six months after (April to September 2025). Customers in launch cities spent more
   before the launch, so they need matching on their pre-launch behavior.
-- retention_campaign: a separate, randomized test of a ₹100 win-back offer on 20,000 customers
+- retention_campaign: a separate, randomized test of a $10 win-back offer on 20,000 customers
   (half got the offer), with their recent behavior and whether they bought in the next 30
   days. The offer works best for customers who are starting to lapse, hardly at all for
   frequent buyers who would buy anyway, and not for long-lost customers.
@@ -40,7 +40,7 @@ from petalmart_common import SAME_DAY_CITIES, city_table
 
 MONTHS = pd.period_range("2024-04", "2026-03", freq="M")
 LAUNCH = pd.Period("2025-04", freq="M")
-EFFECT = 55.0  # rupees per customer per month
+EFFECT = 5.5  # dollars per customer per month
 SEASON = {1: 1.04, 2: 0.97, 3: 1.00, 4: 0.96, 5: 0.97, 6: 0.98, 7: 1.05, 8: 1.00, 9: 1.02, 10: 1.14, 11: 1.10, 12: 1.02}
 
 
@@ -48,12 +48,12 @@ def city_month(rng, cities):
     rows = []
     for c in cities.itertuples():
         treated = c.city in SAME_DAY_CITIES
-        base = (1040 if treated else 820) * np.exp(rng.normal(0, 0.06))
+        base = (104 if treated else 82) * np.exp(rng.normal(0, 0.06))
         users = int((rng.integers(28_000, 60_000) if treated else rng.integers(3_000, 26_000)))
         for k, m in enumerate(MONTHS):
             post = treated and m >= LAUNCH
             ramp = 0.6 if (post and m == LAUNCH) else 1.0
-            spend = base + 850 * (SEASON[m.month] - 1) + 5.5 * k + rng.normal(0, 10) + post * EFFECT * ramp
+            spend = base + 85 * (SEASON[m.month] - 1) + 0.55 * k + rng.normal(0, 1) + post * EFFECT * ramp
             active = int(users * (1.008 ** k) * np.exp(rng.normal(0, 0.02)))
             rows.append((c.city, c.region, m.strftime("%Y-%m"), int(treated), int(post), active, round(spend, 2)))
     return pd.DataFrame(rows, columns=["city", "region", "month", "launch_city", "same_day", "active_customers",
@@ -71,9 +71,9 @@ def customers(rng, cities, n=20_000):
     age = rng.choice(["18-24", "25-34", "35-44", "45-54", "55+"], n, p=[0.18, 0.36, 0.25, 0.13, 0.08])
     habit = rng.gamma(2.2, 1.0, n) * np.where(treated, 1.30, 1.0) * (1 + 0.004 * tenure) * np.where(app, 1.08, 1.0)
     pre_orders = rng.poisson(1.9 * habit)
-    pre_spend = np.round(pre_orders * rng.lognormal(np.log(820), 0.25, n), 0)
-    post_mu = 1.05 * pre_spend + 6 * tenure + 150 * app + treated * EFFECT * 6
-    post_spend = np.round(np.clip(post_mu + rng.normal(0, 700, n), 0, None), 0)
+    pre_spend = np.round(pre_orders * rng.lognormal(np.log(82), 0.25, n), 1)
+    post_mu = 1.05 * pre_spend + 0.6 * tenure + 15 * app + treated * EFFECT * 6
+    post_spend = np.round(np.clip(post_mu + rng.normal(0, 70, n), 0, None), 1)
     return pd.DataFrame({
         "customer_id": [f"D{i:05d}" for i in range(1, n + 1)], "city": city, "launch_city": treated.astype(int),
         "tenure_months": tenure, "device": np.where(app, "app", "web"), "age_band": age,

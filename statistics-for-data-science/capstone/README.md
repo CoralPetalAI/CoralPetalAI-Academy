@@ -4,7 +4,7 @@ Statistics for Data Science · about 10 hours
 
 ## Business use case
 
-PetalMart's leadership wants to know whether lowering the free-shipping threshold from ₹999 to ₹699 should go to all customers. A four-week A/B test has run, and earlier a same-day delivery rollout happened in six cities without randomization. Profile and clean the data, check the experiment's validity, estimate effects on conversion, average order value and profit with frequentist and Bayesian methods, cross-check with the observational rollout, and write a decision memo. For annual impact, assume about 4.2 million active users a year and 13 four-week periods.
+PetalMart's leadership wants to know whether lowering the free-shipping threshold from $100 to $70 should go to all customers (orders below the threshold pay an $8 shipping fee; all money in US dollars). A four-week A/B test has run, and earlier a same-day delivery rollout happened in six cities without randomization. Profile and clean the data, check the experiment's validity, estimate effects on conversion, average order value and profit with frequentist and Bayesian methods, cross-check with the observational rollout, and write a decision memo. For annual impact, assume about 4.2 million active users a year and 13 four-week periods.
 
 ## Data source
 

@@ -37,13 +37,13 @@ def clean_orders(orders: pd.DataFrame) -> pd.DataFrame:
     """The standard cleaning you worked out in Build 2, for later builds.
 
     Drops exact duplicate rows and orders worth zero or less, and divides the orders recorded
-    in paise (value per item above ₹20,000) by 100. Orders from deleted accounts are kept;
+    in cents instead of dollars (value per item above $2,000) by 100. Orders from deleted accounts are kept;
     they drop out when you join to users.
     """
     o = orders.drop_duplicates()
     o = o[o.order_value > 0].copy()
-    paise = o.order_value / o["items"] > 20_000
-    o.loc[paise, "order_value"] = o.loc[paise, "order_value"] / 100
+    cents = o.order_value / o["items"] > 2_000
+    o.loc[cents, "order_value"] = o.loc[cents, "order_value"] / 100
     return o.reset_index(drop=True)
 
 

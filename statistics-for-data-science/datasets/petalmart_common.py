@@ -1,7 +1,7 @@
 """Shared constants for the PetalMart dataset generators (Statistics for Data Science).
 
 Every generator in this folder imports this file, so cities, regions, categories and the
-festival calendar are the same in every dataset of the course.
+festival calendar are the same in every dataset of the course. All money is in US dollars.
 """
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ CATEGORIES = pd.DataFrame(
     {
         "category": ["Fashion", "Home", "Beauty", "Electronics", "Grocery", "Kids", "Sports", "Books"],
         "gross_margin_pct": [0.42, 0.36, 0.48, 0.14, 0.16, 0.38, 0.32, 0.26],
-        "shipping_cost_per_order": [72, 95, 58, 88, 80, 70, 85, 55],
+        "shipping_cost_per_order": [7.2, 9.5, 5.8, 8.8, 8.0, 7.0, 8.5, 5.5],  # US dollars
         "weight": [0.24, 0.14, 0.14, 0.12, 0.16, 0.08, 0.06, 0.06],
         "value_multiplier": [1.0, 1.35, 0.7, 2.4, 0.55, 0.9, 1.1, 0.5],
     }

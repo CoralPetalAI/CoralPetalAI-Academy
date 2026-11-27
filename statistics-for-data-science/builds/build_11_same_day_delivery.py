@@ -49,7 +49,7 @@ results["naive_post_diff"] = None  # TODO: mean spend per customer after launch,
 # errors clustered by city; then an event-study plot (one coefficient per month relative to the launch).
 
 # %%
-results["did_2x2"] = None  # TODO: rupees per customer per month
+results["did_2x2"] = None  # TODO: dollars per customer per month
 results["did_twfe_ci"] = None  # TODO: [low, high]
 results["max_abs_pre_coefficient"] = None  # TODO: largest absolute event-study coefficient before the launch
 
@@ -61,7 +61,7 @@ results["max_abs_pre_coefficient"] = None  # TODO: largest absolute event-study 
 
 # %%
 results["max_smd_after_matching"] = None  # TODO
-results["matched_effect_per_month"] = None  # TODO: rupees per customer per month
+results["matched_effect_per_month"] = None  # TODO: dollars per customer per month
 
 # %% [markdown]
 # ## Task 5 · Note to leadership
@@ -75,10 +75,10 @@ results["note"] = None  # TODO
 
 # %%
 pm.check(results, {
-    "naive_post_diff": pm.matches("ee62de25ccc2", 0, "average the city-months after the launch in each group"),
-    "did_2x2": pm.matches("2858dcd1057d", 0, "(launch after − launch before) − (others after − others before)"),
+    "naive_post_diff": pm.matches("bd3837a48875", 1, "average the city-months after the launch in each group"),
+    "did_2x2": pm.matches("f54f1e8b9a38", 1, "(launch after − launch before) − (others after − others before)"),
     "did_twfe_ci": lambda v: (v[0] < (results["did_2x2"] or 0) < v[1], "the interval should contain your 2 × 2 estimate"),
-    "max_abs_pre_coefficient": pm.between(0, 20, "pre-launch coefficients should hover around zero"),
+    "max_abs_pre_coefficient": pm.between(0, 2, "pre-launch coefficients should hover around zero"),
     "max_smd_after_matching": pm.between(0, 0.1, "after matching every SMD should be below about 0.1"),
-    "matched_effect_per_month": pm.between(40, 70, "close to the difference-in-differences estimate"),
+    "matched_effect_per_month": pm.between(4, 7, "close to the difference-in-differences estimate"),
 })

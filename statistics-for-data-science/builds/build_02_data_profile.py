@@ -57,7 +57,7 @@ results["highest_median_category"] = None  # TODO
 # ## Task 4 · Charts and outliers (L2.3, L2.4)
 # Three charts with finding-style titles, one of them over time. Then flag outliers in `clean` with the
 # 1.5 × IQR rule. Most are genuine large orders; some are errors. Look at value per item: which orders look like
-# they were recorded in paise instead of rupees?
+# they were recorded in cents instead of dollars?
 
 # %%
 results["n_iqr_outliers"] = None  # TODO: orders outside Q1 - 1.5 IQR or Q3 + 1.5 IQR, in `clean`

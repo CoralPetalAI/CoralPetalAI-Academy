@@ -9,15 +9,15 @@ customer data is used.
 
 Rules:
 - 52 weeks of FY2025-26 (weeks starting Monday 7 April 2025 to Monday 30 March 2026):
-  marketing spend and revenue in lakh rupees, average discount in percent, season
+  marketing spend and revenue in thousands of US dollars, average discount in percent, season
   (regular, festive, sale), the marketing channel that took the largest share of the
   week's spend, and ad impressions in millions.
-- The 52 spend values are the ones behind the L7.1 lesson (between 2 and 8 lakh), and the
-  simple regression of revenue on spend reproduces it exactly: revenue = 40 + 3.2 x spend,
+- The 52 spend values are the ones behind the L7.1 lesson (between $20,000 and $80,000), and the
+  simple regression of revenue on spend reproduces it exactly: revenue = 400 + 3.2 x spend,
   R squared 0.64.
 - The team spends most in the festive weeks before Diwali, when revenue is high anyway, so
-  part of that 3.2 belongs to the season: holding season and discount constant, each lakh of
-  spend goes with about 2.1 lakh of revenue.
+  part of that 3.2 belongs to the season: holding season and discount constant, each $1,000 of
+  spend goes with about $2,100 of revenue.
 - Discount and the lead channel add little once spend and season are known.
 - Ad impressions are bought with spend, so the two move almost together (multicollinearity).
 - Busy weeks are noisier than quiet ones (a funnel in the residuals), and one December week
@@ -43,7 +43,7 @@ LESSON_SEED = 7  # the L7.1 lesson's 52 spend values
 
 
 def lesson_spend() -> np.ndarray:
-    return np.round(np.random.default_rng(LESSON_SEED).uniform(2, 8, 52), 1)
+    return np.round(np.random.default_rng(LESSON_SEED).uniform(2, 8, 52), 1) * 10  # $000s, whole thousands
 
 
 def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
@@ -64,17 +64,17 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
 
     discount = np.where(season == "sale", rng.normal(22, 3, 52),
                         np.where(season == "festive", rng.normal(14, 2, 52), rng.normal(8, 1.5, 52)))
-    level = 30 + 2.1 * spend + 12 * (season == "festive") + 4 * (season == "sale")
-    revenue = level + rng.normal(0, 1, 52) * 3.4 * (level / level.mean()) ** 1.5
-    revenue[WEEKS == OUTAGE_WEEK] -= 16.0
+    level = 300 + 2.1 * spend + 120 * (season == "festive") + 40 * (season == "sale")
+    revenue = level + rng.normal(0, 1, 52) * 34 * (level / level.mean()) ** 1.5
+    revenue[WEEKS == OUTAGE_WEEK] -= 160.0
 
-    # exact lesson view: the simple regression is 40 + 3.2 x spend with R squared 0.64
+    # exact lesson view: the simple regression is 400 + 3.2 x spend with R squared 0.64
     x = np.column_stack([np.ones(52), spend])
-    e = revenue - (40 + 3.2 * spend)
+    e = revenue - (400 + 3.2 * spend)
     e -= x @ np.linalg.lstsq(x, e, rcond=None)[0]
     sxx = ((spend - spend.mean()) ** 2).sum()
     e *= np.sqrt(3.2 ** 2 * sxx * 0.36 / 0.64 / (e ** 2).sum())
-    revenue = 40 + 3.2 * spend + e
+    revenue = 400 + 3.2 * spend + e
 
     extra = np.random.default_rng([seed, DESIGN, 1])
     weekly = pd.DataFrame({
@@ -84,8 +84,8 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
         "spend": spend,
         "discount": np.round(discount, 1),
         "lead_channel": extra.choice(["search", "social", "video"], 52, p=[0.5, 0.3, 0.2]),
-        "ad_impressions": np.round(1.2 * spend + extra.normal(0, 0.25, 52), 2),
-        "revenue": np.round(revenue, 2),
+        "ad_impressions": np.round(0.12 * spend + extra.normal(0, 0.25, 52), 2),
+        "revenue": np.round(revenue, 1),
         "note": np.where(WEEKS == OUTAGE_WEEK, "site outage (2 days)", ""),
     })
     return {"weekly_revenue": weekly}

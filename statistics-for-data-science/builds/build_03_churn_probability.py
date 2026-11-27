@@ -24,8 +24,8 @@ customers["complained"] = (customers.complaints > 0).astype(int)
 # The risk flag and the offer (given by the retention team)
 CATCH_RATE = 0.80        # share of customers who go on to churn that the flag catches
 FALSE_ALARM = 0.15       # share of customers who stay that the flag wrongly flags
-OFFER_COST = 200         # rupees per customer who gets the offer
-CUSTOMER_VALUE = 2500    # rupees of margin a customer brings in the next 12 months
+OFFER_COST = 20          # dollars per customer who gets the offer
+CUSTOMER_VALUE = 250     # dollars of margin a customer brings in the next 12 months
 SUCCESS_RATE = 0.30      # share of would-be churners the offer keeps
 results = {}
 
@@ -61,7 +61,7 @@ results["p_churn_given_flag"] = None  # TODO
 # CUSTOMER_VALUE − OFFER_COST. Then the success rate at which the offer breaks even.
 
 # %%
-results["ev_per_flagged_customer"] = None  # TODO: rupees
+results["ev_per_flagged_customer"] = None  # TODO: dollars
 results["break_even_success_rate"] = None  # TODO
 results["decision"] = None  # TODO: send or not, the number it rests on, and the assumption that could change it
 
@@ -74,6 +74,6 @@ pm.check(results, {
     "p_churn_given_complaint": pm.between(0.150, 0.155, "churn rate among customers with at least one complaint"),
     "p_complaint_given_churn": pm.between(0.195, 0.200, "complaint rate among customers who churned"),
     "p_churn_given_flag": pm.between(0.365, 0.375, "flagged churners / all flagged customers"),
-    "ev_per_flagged_customer": pm.between(75, 80, "P(churn | flag) × success × value − cost"),
+    "ev_per_flagged_customer": pm.between(7.5, 8.0, "P(churn | flag) × success × value − cost"),
     "break_even_success_rate": pm.between(0.21, 0.22, "the success rate where the expected value is zero"),
 })

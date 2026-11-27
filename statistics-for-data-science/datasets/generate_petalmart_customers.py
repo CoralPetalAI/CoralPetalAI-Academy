@@ -10,7 +10,7 @@ customer data is used.
 Rules:
 - 12,000 customers active on 31 March 2026, with region, primary device, tenure in months,
   customer type (new: tenure of 6 months or less), complaints filed in the last 12 months,
-  orders and spend in the last 12 months.
+  orders and spend (US dollars) in the last 12 months.
 - churned = 1 if the customer placed no order in the six months that followed.
 - About one customer in ten churns. Churn odds rise by a factor of about 1.8 with each extra
   complaint, fall with tenure, and are lower for app customers, holding the others constant.
@@ -45,7 +45,7 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
     app = rng.random(N) < 0.56
     activity = rng.gamma(2.0, 1.0, N) * (1 + 0.3 * app)
     orders = 1 + rng.poisson(2.8 * activity)
-    spend = np.round(orders * rng.lognormal(np.log(900), 0.35, N), 0)
+    spend = np.round(orders * rng.lognormal(np.log(90), 0.35, N), 1)  # US dollars
     complaints = rng.poisson(0.017 * orders + 0.012)
     lo = B0 + B_COMPLAINT * complaints + B_TENURE * tenure + B_APP * app
     churned = rng.random(N) < 1 / (1 + np.exp(-lo))

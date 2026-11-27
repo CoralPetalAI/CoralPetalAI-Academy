@@ -14,14 +14,17 @@ Rules:
 - One financial year of orders, 1 April 2025 to 31 March 2026 (FY2025-26), about 50,000.
   Orders arrive at random: steady between 10:00 and 22:00, quiet at night, busier at
   weekends, in the festive season before Diwali and in PetalMart's sales, growing through the year.
-- Order values are right-skewed (lognormal), median about ₹700, mean about ₹970. Electronics
+- All money is in US dollars. Order values are right-skewed (lognormal), median about $70,
+  mean about $97, recorded to the nearest 10 cents. Electronics
   and Home baskets are larger, Grocery and Books smaller; South and West spend a little more per
   order and East less; loyalty members and app orders spend a little more. A few genuine
   bulk orders sit far out in the right tail.
+- Shipping: orders below the free-shipping threshold of $100 pay an $8 fee (shipping_fee); from $100
+  shipping is free.
 - Deliveries take about 48 hours on average (SD about 8); a few late deliveries make a longer right tail.
 - Sessions: visits on app or web with pages viewed, add to cart and whether the visit ended in an order.
 - Planted problems to find and clean (Builds 1 and 2): 0.5% exact duplicate order rows, 30 orders
-  with a value of zero or less, 8 orders recorded in paise instead of rupees (100 times too large),
+  with a value of zero or less, 8 orders recorded in cents instead of dollars (100 times too large),
   40 orders from deleted accounts (no matching user), 1.5% of users with a missing region (more
   often app users), and Bengaluru also written as "Bangalore" and "BLR".
 
@@ -44,6 +47,7 @@ TARGET_ORDERS = 50_000
 REGION_VALUE = {"N": 1.00, "S": 1.06, "E": 0.92, "W": 1.03}
 HOURLY = np.array([0.10, 0.06, 0.04, 0.04, 0.05, 0.10, 0.25, 0.50, 0.80, 0.90] + [1.0] * 12 + [0.60, 0.30])
 COURIERS = ["PetalExpress", "RapidShip", "SwiftKart"]
+FREE_SHIPPING_FROM, SHIPPING_FEE = 100, 8  # dollars
 
 
 def make_users(rng: np.random.Generator) -> pd.DataFrame:
@@ -102,11 +106,11 @@ def make_orders(rng, users):
     cat = rng.choice(len(CATEGORIES), len(u), p=CATEGORIES.weight)
     mult = (CATEGORIES.value_multiplier.to_numpy()[cat] * u.region.map(REGION_VALUE).to_numpy()
             * np.where(u.device == "app", 1.03, 1.0) * np.where(u.loyalty_member == 1, 1.08, 1.0))
-    value = rng.lognormal(np.log(700), 0.60, len(u)) * mult
+    value = rng.lognormal(np.log(70), 0.60, len(u)) * mult  # dollars
     bulk = rng.random(len(u)) < 0.002  # genuine bulk orders: offices, events, resellers
     value = np.where(bulk, value * rng.uniform(8, 15, len(u)), value)
-    value = np.round(np.clip(value, 49, None), 0)
-    items = np.where(bulk, rng.integers(12, 41, len(u)), 1 + rng.poisson(np.clip(value / 900, 0.1, 4)))
+    value = np.round(np.clip(value, 4.9, None), 1)  # to the nearest 10 cents
+    items = np.where(bulk, rng.integers(12, 41, len(u)), 1 + rng.poisson(np.clip(value / 90, 0.1, 4)))
     in_sale = cal.sale_day.to_numpy()[day] == 1
     disc_rate = np.where(in_sale, rng.choice([0, 0.05, 0.10, 0.20], len(u), p=[0.25, 0.25, 0.30, 0.20]),
                          rng.choice([0, 0.05, 0.10, 0.20], len(u), p=[0.60, 0.20, 0.14, 0.06]))
@@ -117,7 +121,8 @@ def make_orders(rng, users):
         "order_ts": pd.to_datetime(ts),
         "category": CATEGORIES.category.to_numpy()[cat],
         "order_value": value,
-        "discount": np.round(value * disc_rate, 0),
+        "shipping_fee": np.where(value < FREE_SHIPPING_FROM, SHIPPING_FEE, 0),
+        "discount": np.round(value * 10 * disc_rate) / 10,  # to the nearest 10 cents
         "items": items,
         "payment_method": rng.choice(["UPI", "card", "COD", "wallet"], len(u), p=[0.52, 0.22, 0.18, 0.08]),
         "returned": (rng.random(len(u)) < ret_p).astype(int),
@@ -172,9 +177,9 @@ def plant_problems(rng, users, orders):
     bad = rng.choice(len(orders), 30, replace=False)
     orders.loc[bad[:20], "order_value"] = -orders.loc[bad[:20], "order_value"]
     orders.loc[bad[20:], "order_value"] = 0
-    # recorded in paise instead of rupees
-    paise = rng.choice(np.setdiff1d(np.arange(len(orders)), bad), 8, replace=False)
-    orders.loc[paise, "order_value"] = orders.loc[paise, "order_value"] * 100
+    # recorded in cents instead of dollars
+    cents = rng.choice(np.setdiff1d(np.arange(len(orders)), bad), 8, replace=False)
+    orders.loc[cents, "order_value"] = orders.loc[cents, "order_value"] * 100
     # orders from 40 deleted accounts
     orphan = orders.sample(40, random_state=int(rng.integers(1e9))).copy()
     orphan["user_id"] = [f"U{i:05d}" for i in range(N_USERS + 1, N_USERS + 41)]

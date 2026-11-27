@@ -39,19 +39,19 @@ from petalmart_common import REGION_SHARE, REGIONS, festival_calendar
 START, END = "2023-09-04", "2026-08-30"
 CALENDAR_END = "2026-11-22"  # 12 weeks past the last day of orders
 EAST_WAREHOUSE = pd.Timestamp("2025-06-02")
-# category: daily orders (all regions, Sept 2023), yearly growth, festive lift, sale lift, base price (₹)
+# category: daily orders (all regions, Sept 2023), yearly growth, festive lift, sale lift, base price (US dollars)
 CATS = pd.DataFrame(
     [
-        ("Fashion", 4200, 0.16, 0.85, 0.55, 780),
-        ("Home", 2300, 0.12, 0.55, 0.35, 1150),
-        ("Beauty", 2400, 0.18, 0.45, 0.30, 520),
-        ("Electronics", 1900, 0.14, 1.30, 0.75, 2900),
-        ("Grocery", 3100, 0.22, 0.25, 0.15, 410),
-        ("Kids", 1200, 0.10, 0.50, 0.30, 690),
-        ("Sports", 800, 0.12, 0.20, 0.30, 950),
-        ("Books", 700, 0.06, 0.10, 0.20, 340),
-        ("Footwear", 1300, 0.15, 0.60, 0.50, 1050),
-        ("Appliances", 600, 0.13, 1.10, 0.60, 6400),
+        ("Fashion", 4200, 0.16, 0.85, 0.55, 78.0),
+        ("Home", 2300, 0.12, 0.55, 0.35, 115.0),
+        ("Beauty", 2400, 0.18, 0.45, 0.30, 52.0),
+        ("Electronics", 1900, 0.14, 1.30, 0.75, 290.0),
+        ("Grocery", 3100, 0.22, 0.25, 0.15, 41.0),
+        ("Kids", 1200, 0.10, 0.50, 0.30, 69.0),
+        ("Sports", 800, 0.12, 0.20, 0.30, 95.0),
+        ("Books", 700, 0.06, 0.10, 0.20, 34.0),
+        ("Footwear", 1300, 0.15, 0.60, 0.50, 105.0),
+        ("Appliances", 600, 0.13, 1.10, 0.60, 640.0),
     ],
     columns=["category", "level", "growth", "festive_lift", "sale_lift", "price"],
 )
@@ -126,7 +126,7 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
             k = 25.0  # negative binomial size: variance = mu + mu^2 / k
             y = rng.poisson(mu * rng.gamma(k, 1 / k, len(d)))
             rows.append(pd.DataFrame({"date": d.strftime("%Y-%m-%d"), "category": c.category, "region": r,
-                                      "orders": y, "avg_price": np.round(price, 0), "promo": promo_flag[i]}))
+                                      "orders": y, "avg_price": np.round(price, 1), "promo": promo_flag[i]}))
     daily = pd.concat(rows, ignore_index=True)
     future = festival_calendar(START, CALENDAR_END)  # the calendar is known 12 weeks ahead, for forecasting
     cal_out = future.assign(date=future.date.dt.strftime("%Y-%m-%d"))

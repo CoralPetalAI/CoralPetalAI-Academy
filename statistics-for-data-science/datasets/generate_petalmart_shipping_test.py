@@ -1,6 +1,7 @@
 """Generate the Coral Petal synthetic dataset `petalmart_shipping_test`.
 
 Capstone: The PetalMart Free-Shipping Decision (Statistics for Data Science).
+All money is in US dollars: free shipping from $100 (control) or $70 (treatment), otherwise an $8 fee.
 
 Data source: fully synthetic, produced by this script from the rules below with a
 fixed seed, so every learner gets identical data. Coral Petal AI owns it; no real
@@ -31,12 +32,12 @@ CATEGORIES = pd.DataFrame(
     {
         "category": ["Fashion", "Home", "Beauty", "Electronics", "Grocery", "Kids", "Sports", "Books"],
         "gross_margin_pct": [0.42, 0.36, 0.48, 0.14, 0.16, 0.38, 0.32, 0.26],
-        "shipping_cost_per_order": [72, 95, 58, 88, 80, 70, 85, 55],
+        "shipping_cost_per_order": [7.2, 9.5, 5.8, 8.8, 8.0, 7.0, 8.5, 5.5],  # US dollars
         "weight": [0.24, 0.14, 0.14, 0.12, 0.16, 0.08, 0.06, 0.06],
     }
 )
-SHIPPING_FEE = 79  # charged when the basket is below the free-shipping threshold
-THRESHOLD = {"control": 999, "treatment": 699}
+SHIPPING_FEE = 8  # dollars, charged when the basket is below the free-shipping threshold
+THRESHOLD = {"control": 100, "treatment": 70}
 
 # Conversion rates over the 4-week test (share of users who place at least one order)
 BASE_CONV = {"new": 0.060, "returning": 0.085}
@@ -110,19 +111,19 @@ def make_orders_and_sessions(rng, users, assign):
     o = conv.loc[np.repeat(conv.index, k)].reset_index(drop=True)
     o["date"] = (TEST_START + pd.to_timedelta(rng.integers(0, TEST_DAYS, len(o)), unit="D")).date
     o["category"] = rng.choice(CATEGORIES.category, size=len(o), p=CATEGORIES.weight)
-    base_value = rng.lognormal(mean=np.log(780), sigma=0.62, size=len(o))
+    base_value = rng.lognormal(mean=np.log(78), sigma=0.62, size=len(o))
     is_t = (o.variant == "treatment").to_numpy()
-    # treatment: people stop padding baskets to reach ₹999, so baskets shrink by ₹38 on average
-    value = base_value - is_t * rng.normal(38, 12, len(o))
-    # control shoppers just under ₹999 often pad up to qualify
-    pad = (~is_t) & (value > 820) & (value < 999) & (rng.random(len(o)) < 0.45)
-    value = np.where(pad, value + rng.uniform(0, 260, len(o)), value)
-    value = np.round(np.clip(value, 99, None), 2)
+    # treatment: people stop padding baskets to reach $100, so baskets shrink by $3.80 on average
+    value = base_value - is_t * rng.normal(3.8, 1.2, len(o))
+    # control shoppers just under $100 often pad up to qualify
+    pad = (~is_t) & (value > 82) & (value < 100) & (rng.random(len(o)) < 0.45)
+    value = np.where(pad, value + rng.uniform(0, 26, len(o)), value)
+    value = np.round(np.clip(value, 9.9, None), 2)
     threshold = np.where(is_t, THRESHOLD["treatment"], THRESHOLD["control"])
     o["order_value"] = value
     o["shipping_fee"] = np.where(value < threshold, SHIPPING_FEE, 0)
     o["discount"] = np.round(value * rng.choice([0, 0, 0.05, 0.10], len(o)), 2)
-    o["items"] = 1 + rng.poisson(np.clip(value / 600, 0.2, None))
+    o["items"] = 1 + rng.poisson(np.clip(value / 60, 0.2, None))
     o["returned"] = (rng.random(len(o)) < 0.06).astype(int)
     o["order_id"] = [f"O{i:06d}" for i in range(1, len(o) + 1)]
     orders = o[["order_id", "user_id", "date", "category", "order_value", "shipping_fee", "discount", "items", "returned"]].copy()
@@ -157,7 +158,7 @@ def make_city_rollout(rng):
             effect = 1.08 if treated else 1.0  # true causal effect: +8% orders per active user
             active = int(users * growth * rng.normal(1, 0.02))
             orders = rng.poisson(active * rate * season * effect)
-            revenue = round(orders * rng.normal(1050 * (1.05 if rich else 1), 25), 0)
+            revenue = round(orders * rng.normal(105 * (1.05 if rich else 1), 2.5), 1)
             rows.append((city, w, int(treated), orders, revenue, active))
     return pd.DataFrame(rows, columns=["city", "week", "rolled_out", "orders", "revenue", "active_users"])
 
