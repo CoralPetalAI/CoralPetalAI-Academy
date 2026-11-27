@@ -1,6 +1,6 @@
 # Machine Learning for Data Science
 
-Intermediate · about 52 hours · 12 modules, 2 portfolio projects and a capstone · Coral Petal AI Academy
+Beginner, Intermediate · about 52 hours · 12 modules, 2 portfolio projects and a capstone · Coral Petal AI Academy
 
 You are the data scientist on the Coral Petal analytics team's engagement with **PetalBank**, a digital lender. Every module solves one of its problems: loan sizing, credit risk, card fraud, customer segments, branch demand and product recommendations. All code is Python.
 
