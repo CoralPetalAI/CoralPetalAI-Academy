@@ -27,7 +27,7 @@ Portfolio Project 1 (after Module 05): PetalMart Customer Survey Study. Portfoli
 
 ## Datasets
 
-All data is Coral Petal synthetic, generated with seed 2026 so every learner gets identical files. No real customer data is used. Run the generators from this folder, for example `python datasets/generate_petalmart_core.py`; output goes to `datasets/data/<dataset>/` (not committed).
+All data is Coral Petal synthetic, generated with seed 2026 so every learner gets identical files. No real customer data is used. All money is in US dollars. Run the generators from this folder, for example `python datasets/generate_petalmart_core.py`; output goes to `datasets/data/<dataset>/` (not committed).
 
 | # | Generator | Dataset | Used in |
 |---|---|---|---|

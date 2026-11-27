@@ -89,7 +89,7 @@ def test_profit(res, exp):
     for v in ["control", "treatment"]:
         assert close(res["profit_per_user"][v], exp["profit_per_user"][v], rel=0.02), v
     for seg in ["new", "returning"]:
-        assert close(res["profit_lift_per_user_by_segment"][seg], exp["profit_lift_per_user_by_segment"][seg], rel=0.05, abs_=0.05), seg
+        assert close(res["profit_lift_per_user_by_segment"][seg], exp["profit_lift_per_user_by_segment"][seg], rel=0.05, abs_=0.005), seg
 
 
 # Criterion 6 · Regression (10)

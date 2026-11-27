@@ -25,7 +25,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 sys.path.insert(0, str(Path(__file__).resolve().parent if "__file__" in globals() else Path.cwd()))
 import petalmart as pm
 
-weekly = pm.weekly()          # spend and revenue in lakh rupees, discount in percent; season baseline = regular
+weekly = pm.weekly()          # spend and revenue in thousands of dollars, discount in percent; season baseline = regular
 customers = pm.customers()
 results = {}
 

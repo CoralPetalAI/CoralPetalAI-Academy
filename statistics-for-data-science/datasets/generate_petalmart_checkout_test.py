@@ -14,7 +14,7 @@ Rules:
 - The numbers L10.3 narrates: 10,012 users in control and 9,988 in treatment (the split
   passes the SRM check); 6,508 control users (65.0%) and 6,672 treatment users (66.8%)
   completed a purchase.
-- Revenue per user is skewed and full of zeros; it rose by about ₹11 per user, which the
+- Revenue (US dollars) per user is skewed and full of zeros; it rose by about $1.10 per user, which the
   test is too small to tell apart from zero. Revenue per buyer barely moved.
 - pre_revenue is each user's spend in the four weeks before the test; it correlates about
   0.5 with revenue in the test, which is what CUPED uses.
@@ -34,8 +34,8 @@ import pandas as pd
 
 N = {"control": 10_012, "treatment": 9_988}
 BUYERS = {"control": 6_508, "treatment": 6_672}
-RPU_LIFT = 11.0  # rupees per user, treatment minus control
-RPU_SD = 585.0  # spread of revenue per user, so the 95% interval is about ±16 rupees
+RPU_LIFT = 1.10  # dollars per user, treatment minus control
+RPU_SD = 58.5  # spread of revenue per user, so the 95% interval is about ±$1.60
 TEST_START = pd.Timestamp("2026-06-01")
 DEVICE_P = {"app": 0.50, "mobile_web": 0.35, "desktop": 0.15}
 LIFT_LOGIT = {"app": 0.11, "mobile_web": 0.09, "desktop": 0.06}
@@ -69,7 +69,7 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
 
     # four weeks before the test: same habits, different weeks
     pre_buy = rng.random(n) < 1 / (1 + np.exp(-(0.2 + 0.8 * z)))
-    pre_value = np.exp(6.95 + 0.8 * z + rng.normal(0, 0.55, n))
+    pre_value = np.exp(6.95 + 0.8 * z + rng.normal(0, 0.55, n)) / 10  # dollars, median about $104
     pre_revenue = np.where(pre_buy, pre_value, 0.0)
 
     t_df = pd.DataFrame({
@@ -78,9 +78,9 @@ def generate(seed: int = 2026) -> dict[str, pd.DataFrame]:
         "assigned_date": (TEST_START + pd.to_timedelta(rng.integers(0, 14, n), "D")).strftime("%Y-%m-%d"),
         "device": device,
         "customer_type": ctype,
-        "pre_revenue": np.round(pre_revenue, 0),
+        "pre_revenue": np.round(pre_revenue, 1),
         "converted": converted,
-        "revenue": np.round(revenue, 0),
+        "revenue": np.round(revenue, 1),
         "payment_failed": (rng.random(n) < np.where(converted == 1, 0.012, 0.035)).astype(int),
         "page_load_ms": np.round(np.random.default_rng([seed, 9]).lognormal(np.log(1400), 0.35, n), 0).astype(int),
         "returned": np.where(converted == 1, (rng.random(n) < 0.06).astype(int), 0),

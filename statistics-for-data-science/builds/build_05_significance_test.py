@@ -52,7 +52,7 @@ results["n_web_customers"] = None  # TODO
 # Welch's t-test on the means and the Mann-Whitney test on the whole distributions. Do they agree?
 
 # %%
-results["mean_diff"] = None  # TODO: app minus web, rupees
+results["mean_diff"] = None  # TODO: app minus web, dollars
 results["welch_p"] = None  # TODO
 results["mannwhitney_p"] = None  # TODO
 
@@ -68,7 +68,7 @@ results["cohens_d"] = None  # TODO
 
 # %% [markdown]
 # ## Task 5 · Conclusion for the marketing team (at most 100 words)
-# The size of the difference in rupees, how sure you are, and one reason it might not be caused by the app itself.
+# The size of the difference in dollars, how sure you are, and one reason it might not be caused by the app itself.
 # Hint: compare the share of loyalty members among app and web customers.
 
 # %%
@@ -81,8 +81,8 @@ results["conclusion"] = None  # TODO
 pm.check(results, {
     "n_app_customers": pm.matches("c0f2600a243d", 0, "one row per customer with at least one clean order"),
     "n_web_customers": pm.matches("36f9a4c00c33", 0, "one row per customer with at least one clean order"),
-    "mean_diff": pm.matches("031b4af5197e", 0, "app mean minus web mean, rupees"),
+    "mean_diff": pm.matches("77065cda8fe1", 1, "app mean minus web mean, dollars"),
     "welch_p": pm.between(0, 0.001, "stats.ttest_ind(app, web, equal_var=False)"),
-    "mean_diff_ci": lambda v: (v[0] < 51 < v[1] and v[0] > 0, "the interval should sit above zero and contain your difference"),
+    "mean_diff_ci": lambda v: (v[0] < 5.1 < v[1] and v[0] > 0, "the interval should sit above zero and contain your difference"),
     "cohens_d": pm.between(0.03, 0.10, "difference in means divided by the pooled standard deviation"),
 })

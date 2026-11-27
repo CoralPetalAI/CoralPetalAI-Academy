@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent if "__file__" in globals(
 import petalmart as pm
 
 rng = np.random.default_rng(2026)
-test = pm.checkout_test()   # one row per user who reached checkout; revenue in rupees during the two-week test
+test = pm.checkout_test()   # one row per user who reached checkout; revenue in dollars during the two-week test
 CHECKOUT_USERS_PER_MONTH = 200_000
 MARGIN_RATE = 0.23          # gross margin on an extra order, for the memo
 results = {}
@@ -52,7 +52,7 @@ results["rel_lift_ci"] = None  # TODO: [low, high] from the bootstrap, as propor
 # buyer. Then CUPED with `pre_revenue` (theta from the pooled data) and compare the two intervals.
 
 # %%
-results["rpu_diff"] = None  # TODO: rupees per user, treatment minus control
+results["rpu_diff"] = None  # TODO: dollars per user, treatment minus control
 results["rpu_ci"] = None  # TODO: Welch [low, high]
 results["rpu_ci_cuped"] = None  # TODO: [low, high]
 
@@ -71,7 +71,7 @@ results["device_interaction_min_p"] = None  # TODO: smallest p-value of the vari
 # of the interval (CHECKOUT_USERS_PER_MONTH × lift × revenue per buyer × MARGIN_RATE); state the rollout plan.
 
 # %%
-results["monthly_margin_lakh"] = None  # TODO: [low, point, high] in lakh rupees
+results["monthly_margin"] = None  # TODO: [low, point, high] in dollars
 results["memo"] = None  # TODO
 
 # %% [markdown]
@@ -83,7 +83,7 @@ pm.check(results, {
     "conv_control": pm.matches("4942870d7312", 3, "buyers / users in control"),
     "conv_treatment": pm.matches("59b2006806ee", 3, "buyers / users in treatment"),
     "abs_lift_pp": pm.matches("a97b042d7bd5", 1, "in percentage points: 100 × (treatment − control)"),
-    "rpu_diff": pm.matches("4fc82b26aecb", 0, "mean revenue per user, treatment minus control, zeros included"),
+    "rpu_diff": pm.matches("b05e244762b1", 1, "mean revenue per user, treatment minus control, zeros included"),
     "rpu_ci_cuped": lambda v: (v[1] - v[0] < (results["rpu_ci"][1] - results["rpu_ci"][0]), "CUPED should narrow the interval"),
     "guardrails_harmed": lambda v: (v == [], "test each guardrail: none moved beyond chance"),
     "device_interaction_min_p": pm.between(0.05, 1, "segment differences here are hypotheses, not findings"),
