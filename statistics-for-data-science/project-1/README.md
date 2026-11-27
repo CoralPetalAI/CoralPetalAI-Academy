@@ -49,6 +49,11 @@ Items q01 to q16 are five-point ratings (1 = very poor, 5 = excellent), q17 is o
 
 Pass = 70. One resubmission is allowed. Instructor review within 5 working days.
 
+## Videos
+
+- **Project briefing:** in the Academy, before you start: the question, the data, the ground rules and how the survey study is graded.
+- **Solution walkthrough:** unlocks in the Academy **only after you submit**. It shows the reference solution step by step, with the reasoning behind every decision. It stays locked until then on purpose: this project goes into your portfolio, so it has to be your own work.
+
 ## How to work and submit
 
 1. Generate the data (above) and install the requirements: `pip install -r ../requirements.txt`.
