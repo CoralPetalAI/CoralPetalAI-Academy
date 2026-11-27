@@ -1,6 +1,6 @@
 # Statistics for Data Science
 
-Intermediate · about 54 hours · 12 modules, 2 portfolio projects and a capstone · Coral Petal AI Academy
+Beginner, Intermediate · about 54 hours · 12 modules, 2 portfolio projects and a capstone · Coral Petal AI Academy
 
 You are the data scientist on the Coral Petal analytics team's engagement with **PetalMart**, an online retailer selling across India. Every module answers one question PetalMart's leadership asks of its data.
 
