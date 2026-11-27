@@ -19,6 +19,8 @@ Rules:
   and Home baskets are larger, Grocery and Books smaller; South and West spend a little more per
   order and East less; loyalty members and app orders spend a little more. A few genuine
   bulk orders sit far out in the right tail.
+- Shipping: orders below the free-shipping threshold of $100 pay an $8 fee (shipping_fee); from $100
+  shipping is free.
 - Deliveries take about 48 hours on average (SD about 8); a few late deliveries make a longer right tail.
 - Sessions: visits on app or web with pages viewed, add to cart and whether the visit ended in an order.
 - Planted problems to find and clean (Builds 1 and 2): 0.5% exact duplicate order rows, 30 orders
@@ -45,6 +47,7 @@ TARGET_ORDERS = 50_000
 REGION_VALUE = {"N": 1.00, "S": 1.06, "E": 0.92, "W": 1.03}
 HOURLY = np.array([0.10, 0.06, 0.04, 0.04, 0.05, 0.10, 0.25, 0.50, 0.80, 0.90] + [1.0] * 12 + [0.60, 0.30])
 COURIERS = ["PetalExpress", "RapidShip", "SwiftKart"]
+FREE_SHIPPING_FROM, SHIPPING_FEE = 100, 8  # dollars
 
 
 def make_users(rng: np.random.Generator) -> pd.DataFrame:
@@ -118,6 +121,7 @@ def make_orders(rng, users):
         "order_ts": pd.to_datetime(ts),
         "category": CATEGORIES.category.to_numpy()[cat],
         "order_value": value,
+        "shipping_fee": np.where(value < FREE_SHIPPING_FROM, SHIPPING_FEE, 0),
         "discount": np.round(value * 10 * disc_rate) / 10,  # to the nearest 10 cents
         "items": items,
         "payment_method": rng.choice(["UPI", "card", "COD", "wallet"], len(u), p=[0.52, 0.22, 0.18, 0.08]),
