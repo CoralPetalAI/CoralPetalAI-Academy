@@ -52,7 +52,7 @@ Pass = 70. One resubmission is allowed. Instructor review within 5 working days.
 ## Videos
 
 - **Project briefing:** in the Academy, before you start: the question, the data, the ground rules and how the survey study is graded.
-- **Solution walkthrough:** unlocks in the Academy **only after you submit**. It shows the reference solution step by step, with the reasoning behind every decision. It stays locked until then on purpose: this project goes into your portfolio, so it has to be your own work.
+- **Solution walkthrough:** unlocks in the Academy **only after your final submission**: your one resubmission if you use it, or your first submission once you mark it as final. It shows the reference solution step by step, with the reasoning behind every decision. It stays locked until then on purpose: this project goes into your portfolio, so it has to be your own work.
 
 ## How to work and submit
 
